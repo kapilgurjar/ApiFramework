@@ -5,11 +5,11 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.qa.livebarn.api.base.BaseTest;
-import com.qa.livebarn.api.constants.AuthType;
-import com.qa.livebarn.api.pojo.User;
-import com.qa.livebarn.api.pojo.User.UserData;
-import com.qa.livebarn.api.utils.JsonUtils;
+import com.qa.api.base.BaseTest;
+import com.qa.api.constants.AuthType;
+import com.qa.api.pojo.User;
+import com.qa.api.pojo.User.UserData;
+import com.qa.api.utils.JsonUtils;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
