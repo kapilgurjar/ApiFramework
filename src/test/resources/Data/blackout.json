@@ -1,0 +1,10 @@
+{
+    "blackOut":{
+        "endDateTimeStr":"2022-02-21T23:59",
+        "startDateTimeStr":"2022-02-20T00:00",
+        "uuid": "{{BLACKOUT_SESSION_UUID}}"
+    },
+    "surface":{
+        "id":1362
+    }
+}
