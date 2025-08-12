@@ -19,13 +19,16 @@ public class BaseTest {
 	
 	protected static String base_URL_Test;
 	protected static String Base_URL_Reqres;
+	protected static String Base_URL_Pet;
 	
 	
 
 	
 	//***Reqres Api end points****///
 	
-	protected static final String oauth_token="/users";
+	protected static final String create_New_Pet="/api/v3/pet";
+	
+	protected static final String oauth_token="/api/token";
 	
 	protected static final String getUser_EndPiont="/users";
 	
@@ -35,6 +38,7 @@ public class BaseTest {
 		RestAssured.filters(new AllureRestAssured());
 		base_URL_Test=ConfigManager.get("baseurl.test").trim();
 		Base_URL_Reqres= ConfigManager.get("baseurl.reqres").trim();
+		Base_URL_Pet= ConfigManager.get("baseurl.pet");
 	}
 	
 	

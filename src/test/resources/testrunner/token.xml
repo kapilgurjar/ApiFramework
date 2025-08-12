@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Opencart App Test Regression Suite" thread-count="4"
+	parallel="false" verbose="4">
+
+
+	
+	<test name="Api Regression test cases">
+		
+
+
+
+		<classes>
+			
+				<class name="com.qa.api.testcases.SpotifyTest" />
+				
+		</classes>
+	</test>
+
+	
+
+
+</suite>

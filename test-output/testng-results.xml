@@ -1,25 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="5" passed="5" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-08-06T18:40:03 IST" name="Default suite" finished-at="2025-08-06T18:40:04 IST" duration-ms="1425">
+  <suite started-at="2025-08-12T22:14:33 IST" name="Api test Regression" finished-at="2025-08-12T22:14:41 IST" duration-ms="7819">
     <groups>
     </groups>
-    <test started-at="2025-08-06T18:40:03 IST" name="Default test" finished-at="2025-08-06T18:40:04 IST" duration-ms="1425">
+    <test started-at="2025-08-12T22:14:33 IST" name="Get All User tests" finished-at="2025-08-12T22:14:36 IST" duration-ms="2844">
       <class name="com.qa.reqress.api.testcases.GetAllUserTest">
-        <test-method is-config="true" signature="initSetUp()[pri:0, instance:com.qa.reqress.api.testcases.GetAllUserTest@660acfb]" started-at="2025-08-06T18:40:03 IST" name="initSetUp" finished-at="2025-08-06T18:40:03 IST" duration-ms="312" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- initSetUp -->
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.qa.reqress.api.testcases.GetAllUserTest@660acfb]" started-at="2025-08-06T18:40:03 IST" name="setUp" finished-at="2025-08-06T18:40:03 IST" duration-ms="129" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.qa.reqress.api.testcases.GetAllUserTest@4ea5b703]" started-at="2025-08-12T22:14:33 IST" name="setUp" finished-at="2025-08-12T22:14:33 IST" duration-ms="178" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="getAllUser()[pri:0, instance:com.qa.reqress.api.testcases.GetAllUserTest@660acfb]" started-at="2025-08-06T18:40:03 IST" name="getAllUser" finished-at="2025-08-06T18:40:04 IST" duration-ms="1233" status="PASS">
+        <test-method signature="getAllUserWithJsonPathQuery()[pri:0, instance:com.qa.reqress.api.testcases.GetAllUserTest@4ea5b703]" started-at="2025-08-12T22:14:33 IST" name="getAllUserWithJsonPathQuery" finished-at="2025-08-12T22:14:36 IST" duration-ms="2200" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- getAllUser -->
+        </test-method> <!-- getAllUserWithJsonPathQuery -->
+        <test-method signature="getAllUserWithPOJO()[pri:0, instance:com.qa.reqress.api.testcases.GetAllUserTest@4ea5b703]" started-at="2025-08-12T22:14:36 IST" name="getAllUserWithPOJO" finished-at="2025-08-12T22:14:36 IST" duration-ms="266" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getAllUserWithPOJO -->
       </class> <!-- com.qa.reqress.api.testcases.GetAllUserTest -->
-    </test> <!-- Default test -->
-  </suite> <!-- Default suite -->
+    </test> <!-- Get All User tests -->
+    <test started-at="2025-08-12T22:14:36 IST" name="Pet test cases" finished-at="2025-08-12T22:14:40 IST" duration-ms="4011">
+      <class name="com.qa.api.testcases.CreatePet">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.qa.api.testcases.CreatePet@4f74980d]" started-at="2025-08-12T22:14:36 IST" name="setUp" finished-at="2025-08-12T22:14:36 IST" duration-ms="5" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="create_Pet()[pri:0, instance:com.qa.api.testcases.CreatePet@4f74980d]" started-at="2025-08-12T22:14:36 IST" name="create_Pet" finished-at="2025-08-12T22:14:38 IST" duration-ms="2191" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- create_Pet -->
+        <test-method signature="create_PetWithJsonPathQuery()[pri:0, instance:com.qa.api.testcases.CreatePet@4f74980d]" started-at="2025-08-12T22:14:38 IST" name="create_PetWithJsonPathQuery" finished-at="2025-08-12T22:14:40 IST" duration-ms="1797" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- create_PetWithJsonPathQuery -->
+      </class> <!-- com.qa.api.testcases.CreatePet -->
+    </test> <!-- Pet test cases -->
+    <test started-at="2025-08-12T22:14:40 IST" name="Oath token tests" finished-at="2025-08-12T22:14:41 IST" duration-ms="898">
+      <class name="com.qa.api.testcases.SpotifyTest">
+        <test-method is-config="true" signature="initSetUp()[pri:0, instance:com.qa.api.testcases.SpotifyTest@1722011b]" started-at="2025-08-12T22:14:33 IST" name="initSetUp" finished-at="2025-08-12T22:14:33 IST" duration-ms="443" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initSetUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.qa.api.testcases.SpotifyTest@1722011b]" started-at="2025-08-12T22:14:40 IST" name="setUp" finished-at="2025-08-12T22:14:40 IST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="getAccessToken()[pri:0, instance:com.qa.api.testcases.SpotifyTest@1722011b]" started-at="2025-08-12T22:14:40 IST" name="getAccessToken" finished-at="2025-08-12T22:14:41 IST" duration-ms="877" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getAccessToken -->
+        <test-method signature="verifySpotifyToken()[pri:0, instance:com.qa.api.testcases.SpotifyTest@1722011b]" started-at="2025-08-12T22:14:41 IST" name="verifySpotifyToken" finished-at="2025-08-12T22:14:41 IST" duration-ms="6" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifySpotifyToken -->
+      </class> <!-- com.qa.api.testcases.SpotifyTest -->
+    </test> <!-- Oath token tests -->
+  </suite> <!-- Api test Regression -->
 </testng-results>

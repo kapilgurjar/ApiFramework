@@ -5,10 +5,14 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.ReadContext;
 import com.qa.api.base.BaseTest;
 import com.qa.api.constants.AuthType;
 import com.qa.api.pojo.User;
 import com.qa.api.pojo.User.UserData;
+import com.qa.api.utils.JsonPathValidatorUtil;
 import com.qa.api.utils.JsonUtils;
 
 import io.restassured.http.ContentType;
@@ -20,7 +24,7 @@ public class GetAllUserTest extends BaseTest{
 	
 	
 	@Test
-	public void getAllUser() {
+	public void getAllUserWithPOJO() {
 		Response response =restClient.get(Base_URL_Reqres, getUser_EndPiont, ContentType.JSON, AuthType.API_KEY, null, null);
 		Assert.assertEquals(response.getStatusCode(), 200);
 		User allUser=JsonUtils.deserialize(response, User.class);
@@ -51,6 +55,28 @@ public class GetAllUserTest extends BaseTest{
 		System.out.println(getText);
 		
 		
+	}
+	
+	@Test
+	public void getAllUserWithJsonPathQuery() {
+		Response response =restClient.get(Base_URL_Reqres, getUser_EndPiont, ContentType.JSON, AuthType.API_KEY, null, null);
+		Assert.assertEquals(response.getStatusCode(), 200);
+		String email=JsonPathValidatorUtil.read(response,"$.data[0].email");
+		Assert.assertNotNull(email);
+		System.out.println("Email of first user" +email);
+		
+		String firstName=JsonPathValidatorUtil.read(response,"$.data[0].first_name");
+		Assert.assertNotNull(firstName);
+		System.out.println("FirstName is :" +firstName);
+		
+		String text=JsonPathValidatorUtil.read(response, "$.support.text");
+		System.out.println("Support text is "+text);
+		Assert.assertTrue(text.contains("Content Caddy generate it for you"));
+		
+		//d51a424d279045ed884a43a4e4a098c7
+		//c4680ed457dc41d18060245bed317da3
+		
+		//MyAPP
 	}
 	
 	

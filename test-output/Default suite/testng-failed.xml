@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.qa.reqress.api.testcases.GetAllUserTest">
+      <class name="com.qa.api.testcases.CreatePet">
         <methods>
-          <include name="setUp"/>
+          <include name="create_PetWithJsonPathQuery"/>
           <include name="initSetUp"/>
-          <include name="getAllUser"/>
+          <include name="setUp"/>
         </methods>
-      </class> <!-- com.qa.reqress.api.testcases.GetAllUserTest -->
+      </class> <!-- com.qa.api.testcases.CreatePet -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

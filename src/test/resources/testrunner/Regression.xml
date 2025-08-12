@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Api test Regression" thread-count="4" parallel="false" verbose="4">
+
+
+	<test name="Get All User tests">
+
+
+		<classes>
+
+			<class name="com.qa.reqress.api.testcases.GetAllUserTest" />
+
+		</classes>
+	</test>
+	
+	
+		<test name="Pet test cases">
+
+
+		<classes>
+
+				<class name="com.qa.api.testcases.CreatePet" />
+
+		</classes>
+	</test>
+	
+	
+	<test name="Oath token tests">
+		
+
+
+
+		<classes>
+			
+				<class name="com.qa.api.testcases.SpotifyTest" />
+				
+		</classes>
+	</test>
+
+
+
+
+</suite>
