@@ -19,7 +19,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-               bat "docker build -t ${DOCKER_IMAGE} ."
+                script {
+                    if (isUnix()) {
+                        sh "docker build -t ${DOCKER_IMAGE} ."
+                    } else {
+                        bat "docker build -t ${DOCKER_IMAGE} ."
+                    }
+                }
             }
         }
 
@@ -30,10 +36,19 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push ${DOCKER_IMAGE}
-                       '''
+                    script {
+                        if (isUnix()) {
+                            sh """
+                                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                                docker push ${DOCKER_IMAGE}
+                            """
+                        } else {
+                            bat """
+                                echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                                docker push ${DOCKER_IMAGE}
+                            """
+                        }
+                    }
                 }
             }
         }
@@ -43,25 +58,22 @@ pipeline {
                 echo 'Deploying to Dev environment...'
             }
         }
-        
 
         stage('Run Sanity Tests on Dev') {
-         steps {
-           script {
-            def status = bat(
-                script: """
-                    docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                    mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-                """,
-                returnStatus: true
-            )
-            if (status != 0) {
-                currentBuild.result = 'UNSTABLE'
+            steps {
+                script {
+                    def cmd = """
+                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
+                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                    """
+                    if (isUnix()) {
+                        sh cmd
+                    } else {
+                        bat cmd
+                    }
+                }
             }
         }
-    }
-}
-        
 
         stage('Deploy to QA') {
             steps {
@@ -72,15 +84,14 @@ pipeline {
         stage('Run Regression Tests on QA') {
             steps {
                 script {
-                    def status = bat(
-                        script: """
-                  				  docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                  				  mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-               					 """,
-                        returnStatus: true
-                    )
-                    if (status != 0) {
-                        currentBuild.result = 'UNSTABLE'
+                    def cmd = """
+                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
+                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                    """
+                    if (isUnix()) {
+                        sh cmd
+                    } else {
+                        bat cmd
                     }
                 }
             }
@@ -98,8 +109,6 @@ pipeline {
             }
         }
 
-       
-
         stage('Deploy to Stage') {
             steps {
                 echo 'Deploying to Stage environment...'
@@ -109,21 +118,18 @@ pipeline {
         stage('Run Sanity Tests on Stage') {
             steps {
                 script {
-                    def status = bat(
-                        script: """
-                    			docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                    			mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-                				""",
-                        returnStatus: true
-                    )
-                    if (status != 0) {
-                        currentBuild.result = 'UNSTABLE'
+                    def cmd = """
+                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
+                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                    """
+                    if (isUnix()) {
+                        sh cmd
+                    } else {
+                        bat cmd
                     }
                 }
             }
         }
-
-        
 
         stage('Deploy to Prod') {
             steps {
@@ -134,15 +140,14 @@ pipeline {
         stage('Run Sanity Tests on Prod') {
             steps {
                 script {
-                    def status = bat(
-                        script: """
-                    			docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                    			mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-               				 """,
-                        returnStatus: true
-                    )
-                    if (status != 0) {
-                        currentBuild.result = 'UNSTABLE'
+                    def cmd = """
+                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
+                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                    """
+                    if (isUnix()) {
+                        sh cmd
+                    } else {
+                        bat cmd
                     }
                 }
             }
