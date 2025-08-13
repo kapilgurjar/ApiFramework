@@ -30,10 +30,10 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    bat """
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                         docker push ${DOCKER_IMAGE}
-                       '''
+                    """
                 }
             }
         }
@@ -43,25 +43,22 @@ pipeline {
                 echo 'Deploying to Dev environment...'
             }
         }
-        
 
         stage('Run Sanity Tests on Dev') {
-         steps {
-           script {
-            def status = bat(
-                script: """
-                    docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                   	bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
-                """,
-                returnStatus: true
-            )
-            if (status != 0) {
-                currentBuild.result = 'UNSTABLE'
+            steps {
+                script {
+                    def status = bat(
+                        script: """
+                            docker run --rm -v %WORKSPACE%:/app -w /app ${DOCKER_IMAGE} mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                        """,
+                        returnStatus: true
+                    )
+                    if (status != 0) {
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                }
             }
         }
-    }
-}
-        
 
         stage('Deploy to QA') {
             steps {
@@ -74,9 +71,8 @@ pipeline {
                 script {
                     def status = bat(
                         script: """
-                  				  docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                  				bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
-               					 """,
+                            docker run --rm -v %WORKSPACE%:/app -w /app ${DOCKER_IMAGE} mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                        """,
                         returnStatus: true
                     )
                     if (status != 0) {
@@ -98,8 +94,6 @@ pipeline {
             }
         }
 
-       
-
         stage('Deploy to Stage') {
             steps {
                 echo 'Deploying to Stage environment...'
@@ -111,9 +105,8 @@ pipeline {
                 script {
                     def status = bat(
                         script: """
-                    			docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                    			bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
-                				""",
+                            docker run --rm -v %WORKSPACE%:/app -w /app ${DOCKER_IMAGE} mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                        """,
                         returnStatus: true
                     )
                     if (status != 0) {
@@ -122,8 +115,6 @@ pipeline {
                 }
             }
         }
-
-       
 
         stage('Deploy to Prod') {
             steps {
@@ -136,9 +127,8 @@ pipeline {
                 script {
                     def status = bat(
                         script: """
-                    			docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
-                    			bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
-               				 """,
+                            docker run --rm -v %WORKSPACE%:/app -w /app ${DOCKER_IMAGE} mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
+                        """,
                         returnStatus: true
                     )
                     if (status != 0) {
