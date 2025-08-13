@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "kapil/apiframework:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "kapil/apiautomation:${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = 'dockerhub_credentials'
     }
 
@@ -19,13 +19,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh "docker build -t ${DOCKER_IMAGE} ."
-                    } else {
-                        bat "docker build -t ${DOCKER_IMAGE} ."
-                    }
-                }
+                bat "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
@@ -36,19 +30,10 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    script {
-                        if (isUnix()) {
-                            sh """
-                                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                                docker push ${DOCKER_IMAGE}
-                            """
-                        } else {
-                            bat """
-                                echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                                docker push ${DOCKER_IMAGE}
-                            """
-                        }
-                    }
+                    bat '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${DOCKER_IMAGE}
+                       '''
                 }
             }
         }
@@ -58,22 +43,25 @@ pipeline {
                 echo 'Deploying to Dev environment...'
             }
         }
+        
 
         stage('Run Sanity Tests on Dev') {
-            steps {
-                script {
-                    def cmd = """
-                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
-                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-                    """
-                    if (isUnix()) {
-                        sh cmd
-                    } else {
-                        bat cmd
-                    }
-                }
+         steps {
+           script {
+            def status = bat(
+                script: """
+                    docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
+                   	bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
+                """,
+                returnStatus: true
+            )
+            if (status != 0) {
+                currentBuild.result = 'UNSTABLE'
             }
         }
+    }
+}
+        
 
         stage('Deploy to QA') {
             steps {
@@ -84,14 +72,15 @@ pipeline {
         stage('Run Regression Tests on QA') {
             steps {
                 script {
-                    def cmd = """
-                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
-                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-                    """
-                    if (isUnix()) {
-                        sh cmd
-                    } else {
-                        bat cmd
+                    def status = bat(
+                        script: """
+                  				  docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
+                  				bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
+               					 """,
+                        returnStatus: true
+                    )
+                    if (status != 0) {
+                        currentBuild.result = 'UNSTABLE'
                     }
                 }
             }
@@ -109,6 +98,8 @@ pipeline {
             }
         }
 
+       
+
         stage('Deploy to Stage') {
             steps {
                 echo 'Deploying to Stage environment...'
@@ -118,18 +109,21 @@ pipeline {
         stage('Run Sanity Tests on Stage') {
             steps {
                 script {
-                    def cmd = """
-                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
-                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-                    """
-                    if (isUnix()) {
-                        sh cmd
-                    } else {
-                        bat cmd
+                    def status = bat(
+                        script: """
+                    			docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
+                    			bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
+                				""",
+                        returnStatus: true
+                    )
+                    if (status != 0) {
+                        currentBuild.result = 'UNSTABLE'
                     }
                 }
             }
         }
+
+       
 
         stage('Deploy to Prod') {
             steps {
@@ -140,14 +134,15 @@ pipeline {
         stage('Run Sanity Tests on Prod') {
             steps {
                 script {
-                    def cmd = """
-                        docker run --rm -v ${isUnix() ? '$WORKSPACE' : '%WORKSPACE%'}:/app -w /app ${DOCKER_IMAGE} \
-                        mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml
-                    """
-                    if (isUnix()) {
-                        sh cmd
-                    } else {
-                        bat cmd
+                    def status = bat(
+                        script: """
+                    			docker run --rm -v \$WORKSPACE:/app -w /app ${DOCKER_IMAGE} \
+                    			bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunner/Regression.xml"
+               				 """,
+                        returnStatus: true
+                    )
+                    if (status != 0) {
+                        currentBuild.result = 'UNSTABLE'
                     }
                 }
             }
